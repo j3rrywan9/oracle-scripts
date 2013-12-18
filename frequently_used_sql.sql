@@ -41,6 +41,10 @@ select name,checkpoint_time,unrecoverable_time,unrecoverable_change# from v$data
 
 select file#,ts#,status,enabled,checkpoint_change#,checkpoint_time,name from v$datafile where status='RECOVER';
 
+select * from database_properties where property_name='DEFAULT_TEMP_TABLESPACE';
+
+select name from v$tempfile;
+
 -- Redo
 select name,log_mode from v$database;
 
@@ -62,9 +66,9 @@ select thread#,status,enabled from v$thread;
 
 select * from (select sequence#,thread#,first_time,next_time from v$archived_log order by sequence# desc) where rownum < 11;
 
-select thread#,max(sequence#) from gv$archived_log where applied='YES' group by thread#;
-
 select inst_id,thread#,sequence#,first_change#,first_time,next_change#,next_time,deleted from gv$archived_log where first_change#>12677179 and first_change#<15513401 and deleted='NO' order by sequence#;
+
+select thread#,max(sequence#) from gv$archived_log where applied='YES' group by thread#;
 
 -- Standby
 alter database recover managed standby database using current logfile disconnect;
@@ -73,9 +77,9 @@ alter database recover managed standby database cancel;
 
 select db_unique_name,name,open_mode,database_role from v$database;
 
-select distinct type,database_mode,recovery_mode from v$archive_dest_status where status='VALID';
-
 select process,status,thread#,sequence# from v$managed_standby;
+
+select distinct type,database_mode,recovery_mode from v$archive_dest_status where status='VALID';
 
 select * from v$dataguard_stats where name = 'apply lag';
 
