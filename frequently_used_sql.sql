@@ -43,7 +43,9 @@ select file#,ts#,status,enabled,checkpoint_change#,checkpoint_time,name from v$d
 
 select * from database_properties where property_name='DEFAULT_TEMP_TABLESPACE';
 
-select name from v$tempfile;
+select name,bytes/1024/1024 as MB from v$tempfile;
+
+alter tablespace TEMP add tempfile '+NEWDATA' size 100M;
 
 -- Redo
 select name,log_mode from v$database;
