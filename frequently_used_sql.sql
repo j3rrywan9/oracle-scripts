@@ -45,6 +45,8 @@ select * from database_properties where property_name='DEFAULT_TEMP_TABLESPACE';
 
 select name,bytes/1024/1024 as MB from v$tempfile;
 
+select file#,name from v$tempfile where bytes!=0;
+
 alter tablespace TEMP add tempfile '+NEWDATA' size 100M;
 
 -- Redo
@@ -68,7 +70,16 @@ alter database add logfile member '+DATA/snltest/onlinelog/group_3_1.rdo' to gro
 
 alter database drop logfile member '+DATA/snltest/onlinelog/group_3_1.rdo';
 
-alter database add standby logfile size 52428800; 
+alter database add standby logfile size 52428800;
+
+alter database drop standby logfile group 10;
+
+SQL> begin
+  2    for i in 4 .. 32 loop
+  3      execute immediate 'alter database add logfile group' || ' '  ||i;
+  4    end loop;
+  5  end;
+  6  /
 
 select thread#,status,enabled from v$thread;
 
