@@ -134,6 +134,8 @@ startup;
 
 alter database start logical standby apply immediate;
 
+srvctl add database -db corona -oraclehome /u01/app/ora12101/product/12.1.0/dbhome_1 -spfile "+DATA/corona/spfilecorona.ora" -role LOGICAL_STANDBY -startoption OPEN -dbname pomona -diskgroup "DATA,RECO"
+
 srvctl add database -d belmont -o /u01/app/ora112/product/11.2.0/db_1 -p "+DATA/belmont/spfilebelmont.ora" -r logical_standby -s open -a "DATA,LOG"
 
 srvctl add instance -d belmont -i belmont1 -n bbrac1
