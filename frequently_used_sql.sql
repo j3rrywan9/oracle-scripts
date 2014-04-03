@@ -92,6 +92,9 @@ select thread#,max(sequence#) from gv$archived_log where applied='YES' group by 
 -- Standby
 alter database recover managed standby database using current logfile disconnect;
 
+-- In 12.1.0.1 and onwards
+alter database recover managed standby database disconnect;
+
 alter database recover managed standby database cancel;
 
 select db_unique_name,name,open_mode,database_role from v$database;
