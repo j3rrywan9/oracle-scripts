@@ -19,6 +19,8 @@ set autot off
 
 @$ORACLE_HOME/rdbms/admin/awrgrpt.sql;
 
+select snap_id,end_interval_time from dba_hist_snapshot order by 1;
+
 -- Index
 select index_name,index_type,distinct_keys,num_rows from dba_indexes where table_name='CUSTOMERS';
 
