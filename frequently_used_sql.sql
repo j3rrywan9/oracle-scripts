@@ -101,6 +101,8 @@ select db_unique_name,name,open_mode,database_role from v$database;
 
 select process,status,thread#,sequence# from v$managed_standby;
 
+select process,status,thread#,sequence# from v$managed_standby where process like '%MRP%';
+
 select distinct type,database_mode,recovery_mode from v$archive_dest_status where status='VALID';
 
 select * from v$dataguard_stats where name = 'apply lag';
