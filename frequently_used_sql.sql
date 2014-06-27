@@ -81,6 +81,13 @@ SQL> begin
   5  end;
   6  /
 
+SQL> begin
+  2    for i in 1 .. 64 loop
+  3      execute immediate 'alter system switch logfile';
+  4    end loop;
+  5  end;
+  6  /
+
 select thread#,status,enabled from v$thread;
 
 select * from (select sequence#,thread#,first_time,next_time from v$archived_log order by sequence# desc) where rownum < 11;
@@ -194,26 +201,5 @@ select property_value from database_properties where property_name='DEFAULT_TEMP
 
 select s.sid,s.serial#,p.spid,s.username,s.program from v$session s join v$process p on p.addr=s.paddr where s.type!='BACKGROUND';
 
--- MDS
--- svccfg -s d/mgmt setprop d/debug=true
--- svcadm refresh d/mgmt
--- jdbc:derby://172.16.100.65:1527//var/d/server/db/hercules;user=mds;password=iamMDS
--- or
--- /opt/d/server/bin/derby_client
-
-show tables in mds;
-
-select file_name from orcl_log where timeflow in (select timeflow from dlpx_container where name='dragon');
-
-select snapshot_id,count(*) as files from snl_orcl_db_files where database_id=1 and file_type=1 group by snapshot_id;
-
-select snapshot_id,checkpoint_scn,latest_scn from snl_orcl_db_snapshots where database_id=0;
-
-select first_change_time,last_change_time,creation_time from DLPX_SNAPSHOT;
-
-select name,node_listener_list from ORCL_VIRTUAL_DB;
-
--- Oracle RAC support in Alderaan
-select cluster,name,host from ORCL_CLUSTER_NODE;
-
-select database_name,instance_number,instance_name,node from ORCL_DB_CONFIG,ORCL_INSTANCE_CONFIG where ORCL_DB_CONFIG.DB_CONFIG_ID = ORCL_INSTANCE_CONFIG.ORCL_DB_CONFIG_ID and ORCL_DB_CONFIG.DB_CONFIG_ID = 1;
+-- Oracle 12c
+select name,ispdb_modifiable from v$system_parameter where name like 'sga%';
