@@ -25,11 +25,26 @@ delete archivelog all;
 delete archivelog until sequence=1670 thread 1;
 
 # backup
+configure controlfile autobackup on;
+
 backup database plus archivelog;
 
 backup device type disk format '/u01/app/stage/DB%U' database plus archivelog;
 
 backup device type disk format '/u01/app/stage/CF%U' current controlfile for standby;
+
+# recovery
+restore database;
+
+recover database;
+
+alter database open;
+
+restore database;
+
+recover database until cancel;
+
+alter database open resetlogs;
 
 # duplicate
 # rman target sys/oracle@chicago auxiliary /
