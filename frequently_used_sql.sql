@@ -116,6 +116,9 @@ select * from v$dataguard_stats where name = 'apply lag';
 
 select * from v$archive_gap;
 
+-- On primary
+select status,gap_status from v$archive_dest_status where dest_id=2;
+
 -- Logical Standby
 -- Standby
 alter database recover managed standby database cancel;
@@ -169,7 +172,7 @@ select * from dba_logmnr_purged_log;
 -- RMAN
 select recid,set_stamp,set_count,backup_type,incremental_level from v$backup_set;
 
--- Flashback
+-- Flashback Database (available since 10g)
 alter system set db_recovery_file_dest_size=9G scope=both;
 
 alter system set db_recovery_file_dest='+LOG' scope=both;
@@ -185,6 +188,8 @@ alter database flashback on;
 select current_scn from v$database;
 
 select oldest_flashback_scn,oldest_flashback_time from v$flashback_database_log;
+
+select incarnation#,resetlogs_change#,flashback_database_allowed from v$database_incarnation;
 
 -- Misc
 select username,account_status from dba_users;
