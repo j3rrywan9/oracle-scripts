@@ -94,6 +94,8 @@ select * from (select sequence#,thread#,first_time,next_time from v$archived_log
 
 select inst_id,thread#,sequence#,first_change#,first_time,next_change#,next_time,deleted from gv$archived_log where first_change#>12677179 and first_change#<15513401 and deleted='NO' order by sequence#;
 
+select sequence#,to_char(first_time,'yyyy-mm-dd hh24:mi:ss'),to_char(next_time,'yyyy-mm-dd hh24:mi:ss') from v$archived_log;
+
 select thread#,max(sequence#) from gv$archived_log where applied='YES' group by thread#;
 
 -- Standby
