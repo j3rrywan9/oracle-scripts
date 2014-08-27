@@ -33,6 +33,9 @@ backup device type disk format '/u01/app/stage/DB%U' database plus archivelog;
 
 backup device type disk format '/u01/app/stage/CF%U' current controlfile for standby;
 
+# PDB backup
+backup pluggable database PDB1 include current controlfile;
+
 # recovery
 restore database;
 
@@ -45,6 +48,15 @@ restore database;
 recover database until cancel;
 
 alter database open resetlogs;
+
+# PDB recovery
+alter pluggable database PDB1 close immediate;
+
+restore pluggable database PDB1;
+
+recover pluggable database PDB1;
+
+alter pluggable database PDB1 open resetlogs;
 
 # duplicate
 # rman target sys/oracle@chicago auxiliary /
