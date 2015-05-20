@@ -210,3 +210,6 @@ select s.sid,s.serial#,p.spid,s.username,s.program from v$session s join v$proce
 
 -- Oracle 12c
 select name,ispdb_modifiable from v$system_parameter where name like 'sga%';
+
+-- Trigger
+select text from user_source where name='OPEN_PDBS' and type='TRIGGER';
