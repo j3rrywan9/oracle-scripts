@@ -83,7 +83,7 @@ SQL> begin
 
 SQL> begin
   2    for i in 1 .. 64 loop
-  3      execute immediate 'alter system switch logfile';
+  3      execute immediate 'alter system archive log current';
   4    end loop;
   5  end;
   6  /
