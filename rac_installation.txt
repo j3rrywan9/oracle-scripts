@@ -1,0 +1,61 @@
+Disable iptables and SELinux
+============================
+
+Groups and Users
+================
+groupadd oinstall
+groupadd dba
+groupadd oper
+
+useradd -g oinstall -G dba,oper -d /home/oravis -s /bin/bash oravis
+
+passwd oravis
+
+Raw Devices
+===========
+/etc/udev/rules.d/60-raw.rules
+
+ACTION=="add", KERNEL=="sdc1", RUN+="/bin/raw /dev/raw/raw1 %N"
+
+/etc/udev/rules.d/65-raw-permissions.rules
+
+KERNEL=="raw1", OWNER="oravis", GROUP="oinstall", MODE="660"
+
+raw -qa
+
+ls -l /dev/raw/*
+
+Filesystem
+==========
+fdisk /dev/sdb
+
+mkfs.ext4 /dev/sdb1
+
+/etc/fstab
+
+/dev/sdb1               /u01                    ext4    defaults        0 2
+
+mount -at ext4
+
+Directories
+===========
+mkdir -p /u01/app/11.2.0/grid
+
+mkdir -p /u01/app/oravis
+
+chmod -R 775 /u01
+
+chown -R oravis:oinstall /u01
+
+Packages
+========
+subscription-manager register
+
+subscription-manager attach --auto
+
+yum install ksh
+
+yum install libaio-devel
+
+subscription-manager unregister
+
