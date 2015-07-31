@@ -171,6 +171,18 @@ execute dbms_logstdby.purge_session;
 
 select * from dba_logmnr_purged_log;
 
+-- Failover to a Physical Standby Database
+-- Standby
+alter database recover managed standby database cancel;
+
+alter database recover managed standby database finish;
+
+alter database activate physical standby database;
+
+select db_unique_name,name,open_mode,database_role from v$database;
+
+alter database open;
+
 -- RMAN
 select recid,set_stamp,set_count,backup_type,incremental_level from v$backup_set;
 
