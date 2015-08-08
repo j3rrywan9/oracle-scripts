@@ -1,5 +1,11 @@
 Disable iptables and SELinux
 ============================
+service iptables save
+service iptables stop
+chkconfig iptables off
+
+# /etc/selinux/config
+SELINUX=disabled
 
 Groups and Users
 ================
