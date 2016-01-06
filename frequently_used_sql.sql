@@ -173,6 +173,10 @@ select * from dba_logmnr_purged_log;
 
 -- Failover to a Physical Standby Database
 -- Standby
+select db_unique_name,name,open_mode,database_role from v$database;
+
+select process,status,thread#,sequence# from v$managed_standby where process like '%MRP%';
+
 alter database recover managed standby database cancel;
 
 alter database recover managed standby database finish;
