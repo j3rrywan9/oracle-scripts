@@ -99,6 +99,52 @@ select sequence#,to_char(first_time,'yyyy-mm-dd hh24:mi:ss'),to_char(next_time,'
 select thread#,max(sequence#) from gv$archived_log where applied='YES' group by thread#;
 
 -- Standby
+-- Creating a Physical Standby Database
+-- On primary
+alter database force logging;
+
+alter database add standby logfile size 50M;
+
+alter system set standby_file_management=auto;
+
+alter system set log_archive_config='DG_CONFIG=(anaheim,bell)';
+
+create pfile='/u02/app/stage/initanaheim.ora' from spfile;
+
+-- RMAN
+rman target/
+
+backup device type disk format '/u02/app/stage/DB%U' database plus archivelog;
+
+backup device type disk format '/u02/app/stage/CF%U' current controlfile for standby;
+
+-- On standby
+export ORACLE_SID=bell
+
+sqlplus / as sysdba
+
+startup nomount pfile='/u02/app/stage/initbell.ora';
+
+create spfile='/u02/app/ora11203/product/11.2.0/db_1/dbs/spfilebell.ora' from pfile='/u02/app/stage/initbell.ora';
+
+shutdown abort;
+
+startup nomount;
+
+-- RMAN
+export ORACLE_SID=bell
+
+rman target sys/oracle@anaheim auxiliary /
+
+duplicate target database for standby;
+
+-- SQL*Plus
+alter system set db_file_name_convert='anaheim','bell' scope=spfile;
+
+alter system set log_file_name_convert='anaheim','bell' scope=spfile;
+
+alter system set fal_server=anaheim;
+
 alter database recover managed standby database using current logfile disconnect;
 
 -- In 12.1.0.1 and onwards
