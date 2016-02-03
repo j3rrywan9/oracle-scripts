@@ -9,9 +9,7 @@ SELINUX=disabled
 
 Groups and Users
 ================
-groupadd oinstall
-groupadd dba
-groupadd oper
+groupadd oinstall; groupadd dba; groupadd oper
 
 useradd -g oinstall -G dba,oper -d /home/oravis -s /bin/bash oravis
 
@@ -64,18 +62,40 @@ oravis ALL=NOPASSWD:/bin/mount, /bin/umount, /bin/mkdir, /bin/rmdir
 Raw Devices
 ===========
 fdisk /dev/sdc
+fdisk /dev/sdd
+fdisk /dev/sde
 
 # /etc/udev/rules.d/60-raw.rules
 
 ACTION=="add", KERNEL=="sdc1", RUN+="/bin/raw /dev/raw/raw1 %N"
+ACTION=="add", KERNEL=="sdd1", RUN+="/bin/raw /dev/raw/raw2 %N"
+ACTION=="add", KERNEL=="sde1", RUN+="/bin/raw /dev/raw/raw3 %N"
 
 # /etc/udev/rules.d/65-raw-permissions.rules
 
 KERNEL=="raw1", OWNER="oravis", GROUP="oinstall", MODE="660"
+KERNEL=="raw2", OWNER="oravis", GROUP="oinstall", MODE="660"
+KERNEL=="raw3", OWNER="oravis", GROUP="oinstall", MODE="660"
+
+start_udev
 
 raw -qa
 
 ls -l /dev/raw/*
+
+Filesystem
+==========
+fdisk /dev/sdb
+
+mkfs.ext4 /dev/sdb1
+
+mkdir /u01
+
+# /etc/fstab
+
+/dev/sdb1               /u01                    ext4    defaults        0 2
+
+mount -at ext4
 
 Directories
 ===========
@@ -86,18 +106,6 @@ mkdir -p /u01/app/oravis
 chmod -R 775 /u01
 
 chown -R oravis:oinstall /u01
-
-Filesystem
-==========
-fdisk /dev/sdb
-
-mkfs.ext4 /dev/sdb1
-
-# /etc/fstab
-
-/dev/sdb1               /u01                    ext4    defaults        0 2
-
-mount -at ext4
 
 NTP Slewing Option
 ==================
@@ -114,9 +122,7 @@ subscription-manager register
 
 subscription-manager attach --auto
 
-yum install -y ksh
-
-yum install -y libaio-devel
+yum install -y ksh libaio-devel
 
 subscription-manager unregister
 
