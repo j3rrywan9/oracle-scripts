@@ -57,7 +57,7 @@ oravis soft stack 10240
 
 # visudo
 Defaults:oravis !requiretty
-oravis ALL=NOPASSWD:/bin/mount, /bin/umount, /bin/mkdir, /bin/rmdir
+oravis ALL=NOPASSWD:/bin/mount, /bin/umount, /bin/mkdir, /bin/rmdir, /bin/ps
 
 Raw Devices
 ===========
