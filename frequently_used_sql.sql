@@ -118,6 +118,9 @@ backup device type disk format '/u02/app/stage/DB%U' database plus archivelog;
 
 backup device type disk format '/u02/app/stage/CF%U' current controlfile for standby;
 
+-- Edit pfile /u02/app/stage/initanaheim.ora in VIM
+-- /1,$ s/anaheim/bell/g
+
 -- On standby
 export ORACLE_SID=bell
 
@@ -143,7 +146,15 @@ alter system set db_file_name_convert='anaheim','bell' scope=spfile;
 
 alter system set log_file_name_convert='anaheim','bell' scope=spfile;
 
+alter system set standby_file_management=auto;
+
+alter system set log_archive_max_processes=8;
+
+alter system set log_archive_config='DG_CONFIG=(anaheim,bell)';
+
 alter system set fal_server=anaheim;
+
+alter system set fal_client=bell;;
 
 alter database recover managed standby database using current logfile disconnect;
 
