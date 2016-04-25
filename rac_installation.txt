@@ -11,7 +11,13 @@ Groups and Users
 ================
 groupadd oinstall; groupadd dba; groupadd oper
 
+# 12c
+groupadd oinstall; groupadd dba; groupadd oper; groupadd backupdba; groupadd dgdba; groupadd kmdba
+
 useradd -g oinstall -G dba,oper -d /home/oravis -s /bin/bash oravis
+
+# 12c
+useradd -g oinstall -G dba,oper,backupdba,dgdba,kmdba -d /home/oravis -s /bin/bash oravis
 
 passwd oravis
 
