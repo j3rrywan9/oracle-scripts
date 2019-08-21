@@ -1,6 +1,10 @@
-README
-======
+# Oracle Database Scripts
+
+## Overview
+
 This repository contains frequently used scripts for my daily work with Oracle Database.
+
+## Scripts
 
 1. del_arch.sh
 A shell script used to delete archivelogs that older than sysdate-1.
