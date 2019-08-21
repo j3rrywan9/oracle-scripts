@@ -1,25 +1,43 @@
-Disable iptables and SELinux
-============================
+# RAC Installation
+
+## Linux
+
+### Disable iptables and SELinux
+
+```bash
 service iptables save
 service iptables stop
 chkconfig iptables off
+```
 
-# /etc/selinux/config
+Edit **/etc/selinux/config**
+```
 SELINUX=disabled
+```
 
-Groups and Users
-================
+### Groups and Users
+
+```bash
 groupadd oinstall; groupadd dba; groupadd oper
+```
 
-# 12c
+### 12c
+
+```bash
 groupadd oinstall; groupadd dba; groupadd oper; groupadd backupdba; groupadd dgdba; groupadd kmdba
+```
 
+```bash
 useradd -g oinstall -G dba,oper -d /home/oravis -s /bin/bash oravis
+```
 
-# 12c
+### 12c
+
+```bash
 useradd -g oinstall -G dba,oper,backupdba,dgdba,kmdba -d /home/oravis -s /bin/bash oravis
 
 passwd oravis
+```
 
 # /home/oravis/.bash_profile
 
@@ -34,6 +52,7 @@ export PS1="${user}@$host:\$PWD-> "
 
 # oraivs_ins.sh
 
+```bash
 #!/bin/bash
 
 echo "
@@ -60,16 +79,22 @@ oravis soft nofile 1024
 oravis hard nofile 65536
 oravis soft stack 10240
 " >>/etc/security/limits.conf
+```
 
-# visudo
+### visudo
+
+```
 Defaults:oravis !requiretty
 oravis ALL=NOPASSWD:/bin/mount, /bin/umount, /bin/mkdir, /bin/rmdir, /bin/ps
+```
 
-Raw Devices
-===========
+### Raw Devices
+
+```bash
 fdisk /dev/sdc
 fdisk /dev/sdd
 fdisk /dev/sde
+```
 
 # /etc/udev/rules.d/60-raw.rules
 
@@ -83,11 +108,13 @@ KERNEL=="raw1", OWNER="oravis", GROUP="oinstall", MODE="660"
 KERNEL=="raw2", OWNER="oravis", GROUP="oinstall", MODE="660"
 KERNEL=="raw3", OWNER="oravis", GROUP="oinstall", MODE="660"
 
+```bash
 start_udev
 
 raw -qa
 
 ls -l /dev/raw/*
+```
 
 Filesystem
 ==========
@@ -138,4 +165,3 @@ OSASM group: oinstall
 OSDBA for ASM group: dba
 
 Ignore the packages requirement for pdksh-5.2.14 because we already installed ksh instead.
-
