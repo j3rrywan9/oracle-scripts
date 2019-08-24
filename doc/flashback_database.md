@@ -19,3 +19,29 @@ Note the following important prerequisites:
 Flashback logs are stored as Oracle-managed files in the fast recovery area and cannot be created if no fast recovery area is configured.
 - You must enable flashback logging before the target time for flashback by issuing the SQL statement `ALTER DATABASE ... FLASHBACK ON`.
 Query `V$DATABASE.FLASHBACK_ON` to see whether flashback logging has been enabled.
+
+### Frequently Used SQL
+
+```
+SQL> select flashback_on from v$database;
+
+FLASHBACK_ON
+------------------
+NO
+
+SQL> show parameter DB_FLASHBACK_RETENTION_TARGET
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+db_flashback_retention_target        integer     1440
+
+SQL> ALTER DATABASE FLASHBACK ON;
+
+Database altered.
+
+SQL> select flashback_on from v$database;
+
+FLASHBACK_ON
+------------------
+YES
+```
