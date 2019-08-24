@@ -44,4 +44,10 @@ SQL> select flashback_on from v$database;
 FLASHBACK_ON
 ------------------
 YES
+
+SQL> SELECT OLDEST_FLASHBACK_SCN, OLDEST_FLASHBACK_TIME FROM V$FLASHBACK_DATABASE_LOG;
+
+OLDEST_FLASHBACK_SCN OLDEST_FL
+-------------------- ---------
+             1707228 24-AUG-19
 ```
