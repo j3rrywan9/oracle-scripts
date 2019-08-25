@@ -22,4 +22,37 @@ Starting with Oracle Database 12c, the **SYSBACKUP**, **SYSDG**, and **SYSKM** a
 Each new administrative privilege grants the minimum required privileges to complete tasks in each area of administration.
 The new administrative privileges enable you to avoid granting **SYSDBA** administrative privilege for many common tasks.
 
+### Operations Authorized by Administrative Privileges
+
+Each administrative privilege authorizes a specific set of operations.
+
+### Authentication Methods for Database Administrators
+
+Database administrators can be authenticated with account passwords, operating system (OS) authentication, password files, or strong authentication with a directory-based authentication service, such as Oracle Internet Directory.
+
+### Using Operating System Authentication
+
+### Using Password File Authentication
+
+You can use password file authentication for an Oracle database instance and for an Oracle Automatic Storage Management (Oracle ASM) instance.
+The password file for an Oracle database is called a database password file, and the password file for Oracle ASM is called an Oracle ASM password file.
+
 ### Creating and Maintaining a Database Password File
+
+### Frequently Used SQL
+
+```
+SQL> create user jerry identified by jerry default tablespace users;
+
+User created.
+
+SQL> grant sysdba to jerry;
+
+Grant succeeded.
+
+sqlplus /nolog
+
+SQL> connect jerry as sysdba
+Enter password:
+Connected.
+```
