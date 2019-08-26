@@ -4,15 +4,15 @@ set serveroutput on;
 declare
     current_scn number;
 begin
-    execute immediate 'drop table sample purge';
+--    execute immediate 'drop table sample purge';
 --exception
 --     when others then
 --         if sqlcode != -0942 then raise;
 --         end if;
 
-    execute immediate 'create table sample(id number, current_scn number)';
+--    execute immediate 'create table sample(id number, current_scn number)';
 
-    for i in 1..10 loop
+    for i in 21..30 loop
         select current_scn into current_scn from v$database;
         dbms_output.put_line(i);
         dbms_output.put_line(current_scn);
