@@ -24,5 +24,15 @@ create sequence sample_seq nocycle nocache;
 
 drop sequence sample_seq;
 
+SQL> select sequence_owner, sequence_name from all_sequences where SEQUENCE_NAME = 'SAMPLE_SEQ';
 
+SEQUENCE_OWNER
+--------------------------------------------------------------------------------
+SEQUENCE_NAME
+--------------------------------------------------------------------------------
+SYS
+SAMPLE_SEQ
+
+MDSYS
+SAMPLE_SEQ
 ```
