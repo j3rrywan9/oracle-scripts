@@ -51,13 +51,25 @@ OLDEST_FLASHBACK_SCN OLDEST_FL
 -------------------- ---------
              1707228 24-AUG-19
 
-SQL> select incarnation#, resetlogs_change# from v$database_incarnation;
+SQL> select incarnation#, resetlogs_change#, resetlogs_id from v$database_incarnation;
 
-INCARNATION# RESETLOGS_CHANGE#
------------- -----------------
-           1                 1
-           2           1594143
-           3           1704730
+INCARNATION# RESETLOGS_CHANGE# RESETLOGS_ID
+------------ ----------------- ------------
+           1                 1    852269927
+           2           1594143    988516256
+           3           1704730   1017366377
+           4           1752996   1017413571
 
-SQL> select sequence#,first_change#,next_change#,archived,deleted,status from v$archived_log order by sequence#;
+SQL> select sequence#, first_change#, next_change#, archived, deleted, status from v$archived_log where resetlogs_id = (select max(resetlogs_id) from v$database_incarnation) order by sequence#;
+
+ SEQUENCE# FIRST_CHANGE# NEXT_CHANGE# ARC DEL S
+---------- ------------- ------------ --- --- -
+         1       1752996      1753831 YES YES D
+         1       1752996      1753831 YES YES D
+         2       1753831      1761030 YES YES D
+         2       1753831      1761030 YES YES D
+         3       1761030      1763691 YES YES D
+         3       1761030      1763691 YES YES D
+
+6 rows selected.
 ```
