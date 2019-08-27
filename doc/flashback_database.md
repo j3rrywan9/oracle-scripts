@@ -50,4 +50,14 @@ SQL> SELECT OLDEST_FLASHBACK_SCN, OLDEST_FLASHBACK_TIME FROM V$FLASHBACK_DATABAS
 OLDEST_FLASHBACK_SCN OLDEST_FL
 -------------------- ---------
              1707228 24-AUG-19
+
+SQL> select incarnation#, resetlogs_change# from v$database_incarnation;
+
+INCARNATION# RESETLOGS_CHANGE#
+------------ -----------------
+           1                 1
+           2           1594143
+           3           1704730
+
+SQL> select sequence#,first_change#,next_change#,archived,deleted,status from v$archived_log order by sequence#;
 ```
