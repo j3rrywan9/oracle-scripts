@@ -20,3 +20,11 @@ crsctl check cluster -all
 Use the `crsctl check crs` command to check the status of Oracle High Availability Services and the Oracle Clusterware stack on the local server.
 
 ### `crsctl query crs activeversion`
+
+### `crsctl status resource`
+
+Use the `crsctl status resource` command to obtain the status and configuration information of many particular resources.
+
+```bash
+crsctl stat res -t
+```
