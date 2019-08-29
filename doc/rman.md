@@ -2,6 +2,20 @@
 
 ## 12c Release 1
 
+### RMAN Commands
+
+#### RMAN
+
+##### Purpose
+
+Use the `rman` command to start RMAN from the operating system command line.
+
+##### Semantics
+
+| Syntax Element | Description |
+| --- | --- |
+| `msgno` | Causes RMAN to print message numbers, that is, **RMAN-xxxx**, for the output of all commands. By default, RMAN does not print the **RMAN-xxxx** prefix. |
+
 ### Frequently Used RMAN Commands
 
 #### `show`
