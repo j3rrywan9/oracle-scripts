@@ -20,6 +20,18 @@ Use the `rman` command to start RMAN from the operating system command line.
 | `msgno` | Causes RMAN to print message numbers, that is, **RMAN-xxxx**, for the output of all commands. By default, RMAN does not print the **RMAN-xxxx** prefix. |
 | `target` connetStringSpec | Specifies a connect string to the target database, for example, `target /`. |
 
+#### SET
+
+##### Purpose
+
+Use the `SET` command to control RMAN behavior within a job or session.
+
+##### Semantics
+
+| Syntax Element | Description |
+| --- | --- |
+| CONTROLFILE AUTOBACKUPFORMAT FOR DEVICE TYPE deviceSpecifier TO formatSpec | Overrides the default file name format for the control file autobackup on the specified device type. |
+
 ### Frequently Used RMAN Commands
 
 #### `show`
