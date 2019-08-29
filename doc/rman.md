@@ -14,7 +14,11 @@ Use the `rman` command to start RMAN from the operating system command line.
 
 | Syntax Element | Description |
 | --- | --- |
+| `append` | Causes new output to be appended to the end of the message log file. If you do not specify this parameter, and if a file with the same name as the message log file exists, then RMAN overwrites it. |
+| `nocatalog` | Indicates that you are using RMAN without a recovery catalog. |
+| `log` filename | Specifies the file where RMAN records its output, that is, the commands that were processed and their results. RMAN displays command input at the prompt but does not display command output, which is written to the log file. By default RMAN writes its message log file to standard output. |
 | `msgno` | Causes RMAN to print message numbers, that is, **RMAN-xxxx**, for the output of all commands. By default, RMAN does not print the **RMAN-xxxx** prefix. |
+| `target` connetStringSpec | Specifies a connect string to the target database, for example, `target /`. |
 
 ### Frequently Used RMAN Commands
 
