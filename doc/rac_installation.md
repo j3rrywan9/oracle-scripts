@@ -2,7 +2,9 @@
 
 ## Linux
 
-### Disable iptables and SELinux
+### RHEL
+
+#### Disable iptables and SELinux
 
 ```bash
 service iptables save
@@ -15,13 +17,13 @@ Edit **/etc/selinux/config**
 SELINUX=disabled
 ```
 
-### Groups and Users
+#### Groups and Users
 
 ```bash
 groupadd oinstall; groupadd dba; groupadd oper
 ```
 
-### 12c
+#### 12c
 
 ```bash
 groupadd oinstall; groupadd dba; groupadd oper; groupadd backupdba; groupadd dgdba; groupadd kmdba
@@ -31,7 +33,7 @@ groupadd oinstall; groupadd dba; groupadd oper; groupadd backupdba; groupadd dgd
 useradd -g oinstall -G dba,oper -d /home/oravis -s /bin/bash oravis
 ```
 
-### 12c
+#### 12c
 
 ```bash
 useradd -g oinstall -G dba,oper,backupdba,dgdba,kmdba -d /home/oravis -s /bin/bash oravis
@@ -81,14 +83,14 @@ oravis soft stack 10240
 " >>/etc/security/limits.conf
 ```
 
-### visudo
+#### visudo
 
 ```
 Defaults:oravis !requiretty
 oravis ALL=NOPASSWD:/bin/mount, /bin/umount, /bin/mkdir, /bin/rmdir, /bin/ps
 ```
 
-### Raw Devices
+#### Raw Devices
 
 ```bash
 fdisk /dev/sdc
@@ -116,13 +118,15 @@ raw -qa
 ls -l /dev/raw/*
 ```
 
-Filesystem
-==========
+#### Filesystem
+
+```bash
 fdisk /dev/sdb
 
 mkfs.ext4 /dev/sdb1
 
 mkdir /u01
+```
 
 # /etc/fstab
 
@@ -130,8 +134,8 @@ mkdir /u01
 
 mount -at ext4
 
-Directories
-===========
+#### Directories
+
 mkdir -p /u01/app/11.2.0/grid
 
 mkdir -p /u01/app/oravis
@@ -140,17 +144,22 @@ chmod -R 775 /u01
 
 chown -R oravis:oinstall /u01
 
-NTP Slewing Option
-==================
+#### NTP Slewing Option
+
+```bash
 service ntpd stop
+```
 
 # /etc/sysconfig/ntpd
 -x
 
+```bash
 service ntpd start
+````
 
-Packages
-========
+#### Packages
+
+```bash
 subscription-manager register
 
 subscription-manager attach --auto
@@ -158,9 +167,10 @@ subscription-manager attach --auto
 yum install -y ksh libaio-devel
 
 subscription-manager unregister
+```
 
-GI Installation
-===============
+#### GI Installation
+
 OSASM group: oinstall
 OSDBA for ASM group: dba
 
