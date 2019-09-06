@@ -175,3 +175,18 @@ OSASM group: oinstall
 OSDBA for ASM group: dba
 
 Ignore the packages requirement for pdksh-5.2.14 because we already installed ksh instead.
+
+### SUSE Linux Enterprise Server (SLES)
+
+#### SLES 11 SP4
+
+##### SSH
+
+Edit `/etc/ssh/sshd_config`
+```
+PasswordAuthentication yes
+```
+
+```bash
+service sshd restart
+```
