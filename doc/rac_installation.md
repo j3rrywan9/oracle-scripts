@@ -180,13 +180,49 @@ Ignore the packages requirement for pdksh-5.2.14 because we already installed ks
 
 #### SLES 11 SP4
 
-##### SSH
+##### SSH Daemon Configuration
 
-Edit `/etc/ssh/sshd_config`
+Edit `/etc/ssh/sshd_config`, allow password authentication
 ```
 PasswordAuthentication yes
 ```
 
+Restart sshd
 ```bash
 service sshd restart
+```
+
+##### Raw Devices
+
+Partition newly added disks
+```
+fdisk /dev/sdc
+fdisk /dev/sdd
+fdisk /dev/sde
+```
+
+Edit `/etc/raw`
+```
+raw1:sdc1
+raw2:sdd1
+raw3:sde1
+```
+
+Restart raw service
+```bash
+/etc/init.d/raw start
+```
+
+Create `/etc/udev/rules.d/65-raw-permissions.rules`
+```
+KERNEL=="raw1", OWNER="oracle", GROUP="oinstall", MODE="660"
+KERNEL=="raw2", OWNER="oracle", GROUP="oinstall", MODE="660"
+KERNEL=="raw3", OWNER="oracle", GROUP="oinstall", MODE="660"
+```
+
+Restart udev service
+```bash
+/etc/init.d/boot.udev stop
+
+/etc/init.d/boot.udev start
 ```
