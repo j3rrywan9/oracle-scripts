@@ -226,3 +226,10 @@ Restart udev service
 
 /etc/init.d/boot.udev start
 ```
+
+Start raw service on boot
+```bash
+chkconfig --list
+
+chkconfig raw on
+```
