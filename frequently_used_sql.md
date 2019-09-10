@@ -1,6 +1,8 @@
--- Frequently Used SQL Statements
+# Frequently Used SQL Statements
 
--- Tablespace and Data File
+## Tablespace and Data File
+
+```sql
 create bigfile tablespace BIGTBS datafile '+DATA/snltest/bigtbs_f1.dbf' size 10M autoextend on;
 
 drop tablespace BIGTBS including contents and datafiles;
@@ -48,8 +50,11 @@ select name,bytes/1024/1024 as MB from v$tempfile;
 select file#,name from v$tempfile where bytes!=0;
 
 alter tablespace TEMP add tempfile '+NEWDATA' size 100M;
+```
 
--- Redo
+## Redo
+
+```sql
 select name,log_mode from v$database;
 
 select * from v$log;
@@ -97,10 +102,14 @@ select inst_id,thread#,sequence#,first_change#,first_time,next_change#,next_time
 select sequence#,to_char(first_time,'yyyy-mm-dd hh24:mi:ss'),to_char(next_time,'yyyy-mm-dd hh24:mi:ss') from v$archived_log;
 
 select thread#,max(sequence#) from gv$archived_log where applied='YES' group by thread#;
+```
 
--- Standby
--- Creating a Physical Standby Database
--- On primary
+## Standby
+
+### Creating a Physical Standby Database
+
+On primary
+```sql
 alter database force logging;
 
 alter database add standby logfile size 50M;
@@ -110,18 +119,24 @@ alter system set standby_file_management=auto;
 alter system set log_archive_config='DG_CONFIG=(anaheim,bell)';
 
 create pfile='/u02/app/stage/initanaheim.ora' from spfile;
+```
 
--- RMAN
+#### RMAN
+
 rman target/
 
 backup device type disk format '/u02/app/stage/DB%U' database plus archivelog;
 
 backup device type disk format '/u02/app/stage/CF%U' current controlfile for standby;
 
--- Edit pfile /u02/app/stage/initanaheim.ora in VIM
--- /1,$ s/anaheim/bell/g
+#### Edit pfile /u02/app/stage/initanaheim.ora in VIM
 
--- On standby
+```
+/1,$ s/anaheim/bell/g
+```
+
+On standby
+```sql
 export ORACLE_SID=bell
 
 sqlplus / as sysdba
@@ -133,15 +148,19 @@ create spfile='/u02/app/ora11203/product/11.2.0/db_1/dbs/spfilebell.ora' from pf
 shutdown abort;
 
 startup nomount;
+```
 
--- RMAN
+#### RMAN
+
 export ORACLE_SID=bell
 
 rman target sys/oracle@anaheim auxiliary /
 
 duplicate target database for standby;
 
--- SQL*Plus
+#### SQL*Plus
+
+```sql
 alter system set db_file_name_convert='anaheim','bell' scope=spfile;
 
 alter system set log_file_name_convert='anaheim','bell' scope=spfile;
@@ -157,6 +176,7 @@ alter system set fal_server=anaheim;
 alter system set fal_client=bell;;
 
 alter database recover managed standby database using current logfile disconnect;
+```
 
 -- In 12.1.0.1 and onwards
 alter database recover managed standby database disconnect;
@@ -175,14 +195,18 @@ select * from v$dataguard_stats where name = 'apply lag';
 
 select * from v$archive_gap;
 
--- On primary
+#### On primary
+
 select status,gap_status from v$archive_dest_status where dest_id=2;
 
--- Logical Standby
--- Standby
+### Logical Standby
+
+#### Standby
+
 alter database recover managed standby database cancel;
 
--- Primary
+#### Primary
+
 execute DBMS_LOGSTDBY.BUILD;
 
 -- Standby (RAC)
@@ -247,7 +271,9 @@ alter database open;
 -- RMAN
 select recid,set_stamp,set_count,backup_type,incremental_level from v$backup_set;
 
--- Flashback Database (available since 10g)
+## Flashback Database (available since 10g)
+
+```sql
 alter system set db_recovery_file_dest_size=9G scope=both;
 
 alter system set db_recovery_file_dest='+LOG' scope=both;
@@ -265,8 +291,11 @@ select current_scn from v$database;
 select oldest_flashback_scn,oldest_flashback_time from v$flashback_database_log;
 
 select incarnation#,resetlogs_change#,flashback_database_allowed from v$database_incarnation;
+```
 
--- Misc
+## Misc
+
+```sql
 select username,account_status from dba_users;
 
 drop user d cascade;
@@ -280,9 +309,16 @@ revoke select any dictionary from d;
 select property_value from database_properties where property_name='DEFAULT_TEMP_TABLESPACE';
 
 select s.sid,s.serial#,p.spid,s.username,s.program from v$session s join v$process p on p.addr=s.paddr where s.type!='BACKGROUND';
+```
 
--- Oracle 12c
+## Oracle 12c
+
+```sql
 select name,ispdb_modifiable from v$system_parameter where name like 'sga%';
+```
 
--- Trigger
+## Trigger
+
+```sql
 select text from user_source where name='OPEN_PDBS' and type='TRIGGER';
+```
