@@ -52,11 +52,9 @@ select file#,name from v$tempfile where bytes!=0;
 alter tablespace TEMP add tempfile '+NEWDATA' size 100M;
 ```
 
-## Redo
+## Online redo logs
 
 ```sql
-select name,log_mode from v$database;
-
 select * from v$log;
 
 select * from v$logfile;
@@ -94,6 +92,14 @@ SQL> begin
   6  /
 
 select thread#,status,enabled from v$thread;
+```
+
+## Archived redo logs
+
+```sql
+select name,log_mode from v$database;
+
+select recid,name,thread#,sequence#,first_change#,next_change#,deleted,status from v$archived_log where resetlogs_id = (select resetlogs_id from v$database_incarnation where status = 'CURRENT');
 
 select * from (select sequence#,thread#,first_time,next_time from v$archived_log order by sequence# desc) where rownum < 11;
 
