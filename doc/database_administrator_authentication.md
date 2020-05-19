@@ -50,6 +50,10 @@ SQL> grant sysdba to jerry;
 
 Grant succeeded.
 
+SQL> grant create session to jerry;
+
+Grant succeeded.
+
 sqlplus /nolog
 
 SQL> connect jerry as sysdba
