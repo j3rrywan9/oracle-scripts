@@ -44,7 +44,7 @@ SQL> select sequence# from v$log where status = 'CURRENT';
 ----------
         10
 
-SQL> select sequence#,first_change#,next_change#,deleted,status from v$archived_log order by sequence#;
+SQL> select sequence#,name,first_change#,next_change#,deleted,status from v$archived_log order by sequence#;
 
  SEQUENCE# FIRST_CHANGE# NEXT_CHANGE# DEL S
 ---------- ------------- ------------ --- -
@@ -53,4 +53,60 @@ SQL> select sequence#,first_change#,next_change#,deleted,status from v$archived_
          5        952632       952635 NO  A
          6        952635       952684 NO  A
          7        952684       952702 NO  A
+
+SQL> select dest_id,dest_name,type,destination from v$archive_dest_status where status='VALID';
+
+   DEST_ID
+----------
+DEST_NAME
+--------------------------------------------------------------------------------
+TYPE
+--------------
+DESTINATION
+--------------------------------------------------------------------------------
+         1
+LOG_ARCHIVE_DEST_1
+LOCAL
+/u01/app/dest1
+
+
+   DEST_ID
+----------
+DEST_NAME
+--------------------------------------------------------------------------------
+TYPE
+--------------
+DESTINATION
+--------------------------------------------------------------------------------
+         2
+LOG_ARCHIVE_DEST_2
+LOCAL
+/u01/app/dest2
+
+
+   DEST_ID
+----------
+DEST_NAME
+--------------------------------------------------------------------------------
+TYPE
+--------------
+DESTINATION
+--------------------------------------------------------------------------------
+         3
+LOG_ARCHIVE_DEST_3
+LOCAL
+/u01/app/dest3
+
+
+   DEST_ID
+----------
+DEST_NAME
+--------------------------------------------------------------------------------
+TYPE
+--------------
+DESTINATION
+--------------------------------------------------------------------------------
+        10
+LOG_ARCHIVE_DEST_10
+LOCAL
 ```
